@@ -21,14 +21,14 @@ router.use(verifyJWT)
 
 router.route("/").post(createAPlaylist).get(getUserCreatedPlaylists)
 
-router.route("/:name").get(getplaylistbyname)
+router.route("/name/:playlist_name").get(getplaylistbyname)
 
 router.route("/:playlist_id")
     .get(getplaylistbyId)
     .patch(updatePlaylistinfo)
     .delete(deleteAPlaylist)
 
-router.route("/:video_id").post(addVideotoNewPlaylist)
+router.route("/newplaylist/:video_id").post(addVideotoNewPlaylist)
 
 router.route("/add/:video_id/:playlist_id").patch(addVideotoPlaylist)
 

@@ -18,7 +18,7 @@ const router = Router()
 
 router.use(verifyJWT)
 
-Router.router("/").post( upload.fields([
+router.route("/").post( upload.fields([
     {
         name: "videoFile",
         maxCount: 1
@@ -29,13 +29,12 @@ Router.router("/").post( upload.fields([
     }
 ]), publishAVideo)
 
-Router
-.router("/:videoId")
-.get(playVideoById)
-.patch(upload.single("thumbnail"), updateVideoThumbnailFile)
-.patch(upload.single("videoFile"), updateVideoFile)
-.patch(updateVideodata)
-.delete(deleteVideo)
+router.route("/:videoId")
+    .get(playVideoById)
+    .patch(updateVideodata)
+    .delete(deleteVideo)
 
+router.route("/modify_video/:videoId").patch(upload.single("videoFile"), updateVideoFile)
+router.route("/edit_thumbnail/:videoId").patch(upload.single("thumbnail"), updateVideoThumbnailFile)
 
 export default router

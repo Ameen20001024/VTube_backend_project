@@ -20,7 +20,6 @@ router.use(verifyJWT)
 router.route("/").get(channelsSubscribedToList)
 router.route("/:username")
     .get(getUserChannelProfile)
-    .get(channelsSubscribedToList)
     .post(subscribechannel)
     .delete(unSubscribeChannel)
 

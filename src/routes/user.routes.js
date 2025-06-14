@@ -49,7 +49,7 @@ router.route("/refresh-token").post(RefreshAccessToken)
 
 router.route("/:username").get(verifyJWT, getUserChannelProfile)
 
-router.route("/:username/subscribers-list").get(verifyJWT, subscribers_list)
+router.route("/subscribers-list/:username").get(verifyJWT, subscribers_list)
 
 router.route("/watch-history").get(verifyJWT, getWatchHistory)
 
