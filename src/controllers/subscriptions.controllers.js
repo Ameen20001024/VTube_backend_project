@@ -30,12 +30,12 @@ const subscribechannel = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Channel owner not identified")
     }
 
-    const subcription = await Subscription.create({
+    const subscription = await Subscription.create({
         subscriber: subscriber_id,
         channel: channelowner_id
     })
 
-    if (!subcription) {
+    if (!subscription) {
         throw new ApiError(400, "Subscription failed")
     }
 
@@ -43,7 +43,7 @@ const subscribechannel = asyncHandler(async (req, res) => {
     .status(200)
     .cookie("Channelowner_ID", channelowner_id)
     .json(
-        new ApiResponse(200, Subscription, "Channel subscribed successfully")
+        new ApiResponse(200, subscription, "Channel subscribed successfully")
     )
 
 })
@@ -72,16 +72,16 @@ const unSubscribeChannel = asyncHandler(async (req, res) => {
         throw new ApiError(400, "could not fetch all subscriptions")
     }
 
-    const subscription = allChannelSubscribers.find((field)=> field.subscriber === subscriber_id)
+    const subscription = allChannelSubscribers.find((field)=> field.subscriber.toString() === subscriber_id.toString())
 
     if (!subscription) {
         throw new ApiError(400, "could not fetch subscription object")
     }
 
-    const subcription_id = subscription._id
+    const subscription_id = subscription._id
 
     try {
-        await Subscription.findByIdAndDelete(subcription_id)
+        await Subscription.findByIdAndDelete(subscription_id)
     } catch (error) {
         throw new ApiError(400,"Unsubscription failed")
     }
@@ -107,14 +107,14 @@ const channelsSubscribedToList = asyncHandler(async (req, res) => {
         throw new ApiError(400, "could not fetch all subscriptions")
     }
 
-    const channelsSubscribedToList_list = allChannelsSubscribedTo.map(object => ({fullname: object.channel.fullname, username: object.channel.username, avatar: object.channel.avatar}))
+    const channelsSubscribedTo_list = allChannelsSubscribedTo.map(object => ({fullname: object.channel.fullname, username: object.channel.username, avatar: object.channel.avatar}))
 
-    if (!channelsSubscribedToList_list.length) {
+    if (!channelsSubscribedTo_list.length) {
         throw new ApiError(400, "List of channels subscribed to is not fetched")
     }
 
     return res.status(200).json(
-        new ApiResponse(200, channelsSubscribedToList, "List of channel subscriptions are fetched")
+        new ApiResponse(200, channelsSubscribedTo_list, "List of channel subscriptions are fetched")
     )
 
 })

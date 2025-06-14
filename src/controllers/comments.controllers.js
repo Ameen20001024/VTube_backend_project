@@ -19,6 +19,12 @@ const addComment = asyncHandler(async (req, res) => {
     const comment_owner_id = req.user?._id
     const {video_id} = req.params
 
+    const video = await Video.findById(video_id); // validating video_id with db
+    if (!video) {
+        throw new ApiError(404, "Video not found");
+    }
+
+
     const addAComment = await Comments.create({
         content: comment_content,
         video: video_id,
@@ -42,6 +48,22 @@ const updateComment = asyncHandler(async (req, res) => {
     
     const {comment_id} = req.params
     const {updated_content} = req.body
+
+    if (!updated_content?.trim()) {
+        throw new ApiError(400, "Updated content is empty");
+    }
+
+
+    const comment = await Comments.findById(comment_id);
+
+    if (!comment) {
+        throw new ApiError(404, "Comment not found");
+    }
+
+    if (comment.owner.toString() !== req.user._id.toString()) {
+        throw new ApiError(403, "Unauthorized to update this comment");
+    }
+
 
     const newcomment = await Comments.findByIdAndUpdate(comment_id, {
         $set: {
@@ -68,8 +90,23 @@ const updateComment = asyncHandler(async (req, res) => {
 const deletecomment = asyncHandler(async (req, res) => {
     
     const {comment_id} = req.params
+
+    const comment = await Comments.findById(comment_id);
+
+    if (!comment) {
+        throw new ApiError(404, "Comment not found");
+    }
+
+    if (comment.owner.toString() !== req.user._id.toString()) {
+        throw new ApiError(403, "Unauthorized to update this comment");
+    }
+
     
     await Comments.findByIdAndDelete(comment_id)
+
+    return res.status(200).json(
+        new ApiResponse(200, {}, "Comment deleted successfully")
+    )
 
 })
 

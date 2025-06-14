@@ -20,6 +20,12 @@ const likeAVideo = asyncHandler(async (req, res) => {
 
     const user_id = req.user?._id
 
+    const existingLike = await Likes.findOne({ video: video_id, user: user_id });
+    if (existingLike) {
+        throw new ApiError(400, "You already liked this video");
+    }
+
+
     const videoliked = await Likes.create({
         video: video_id,
         user: user_id
@@ -49,7 +55,7 @@ const unlikeTheVideo = asyncHandler(async (req, res) => {
         throw new ApiError(400, "liked videos not found")
     }
 
-    const videotoUnlike = likedVideos.find(field => field.video === video_id)
+    const videotoUnlike = likedVideos.find(field => field.video.toString() === video_id.toString())
 
     if (!videotoUnlike) {
         throw new ApiError(400, "liked video not fetched")
@@ -82,9 +88,15 @@ const likeAComment = asyncHandler(async (req, res) => {
 
     const owner_id = req.user?._id
 
+    const existingLike = await Likes.findOne({ comment: comment_id, user: user_id });
+    if (existingLike) {
+        throw new ApiError(400, "You already liked this comment");
+    }
+
+
     const commentliked = await Likes.create({
         comment: comment_id,
-        owner: owner_id
+        user: owner_id
     })
 
     if (!commentliked) {
@@ -111,7 +123,7 @@ const unlikeTheComment = asyncHandler(async (req, res) => {
         throw new ApiError(400, "liked comments not found")
     }
 
-    const commenttoUnlike = likedcomments.find(field => field.comment === comment_id)
+    const commenttoUnlike = likedcomments.find(field => field.commenttoString() === comment_id.toString())
 
     if (!commenttoUnlike) {
         throw new ApiError(400, "liked comment not fetched")
@@ -144,9 +156,15 @@ const likeAPlaylist = asyncHandler(async (req, res) => {
 
     const owner_id = req.user?._id
 
+    const existingLike = await Likes.findOne({ playlist: playlist_id, user: user_id });
+    if (existingLike) {
+        throw new ApiError(400, "You already liked this playlist");
+    }
+
+
     const playlistliked = await Likes.create({
         playlist: playlist_id,
-        owner: owner_id
+        user: owner_id
     })
 
     if (!playlistliked) {
@@ -173,7 +191,7 @@ const unlikethePlaylist = asyncHandler(async (req, res) => {
         throw new ApiError(400, "liked playlists not found")
     }
 
-    const playlisttoUnlike = likedplaylists.find(field => field.playlist === playlist_id)
+    const playlisttoUnlike = likedplaylists.find(field => field.playlist._idtoString() === playlist_idtoString())
 
     if (!playlisttoUnlike) {
         throw new ApiError(400, "liked playlist not fetched")
@@ -202,7 +220,7 @@ const getLikedVideos = asyncHandler(async (req, res) => {
     
         {
             $match:{
-                user: mongoose.Types.ObjectId(req.user._id)
+                user: mongoose.Types.ObjectId(req.user?._id)
             }
         
         },
@@ -260,7 +278,7 @@ const getLikedPlaylists = asyncHandler(async (req, res) => {
     
         {
             $match:{
-                user: mongoose.Types.ObjectId(req.user._id)
+                user: mongoose.Types.ObjectId(req.user?._id)
             }
         
         },
@@ -314,7 +332,7 @@ const getLikedPlaylists = asyncHandler(async (req, res) => {
     return res
     .status(200)
     .json(
-        new ApiResponse(200, allLikedplaylists, "Liked comments fetched successfully")
+        new ApiResponse(200, allLikedplaylists, "Liked playlists fetched successfully")
     )
 
 })

@@ -22,7 +22,7 @@ const publishAVideo = asyncHandler(async (req,res) => {
     
     const {title , discription} = req.body
 
-    if ({title, discription}.some((fields)=>fields.trim()==="")) {
+    if ([title, discription].some((fields)=>fields.trim()==="")) {
         throw new ApiError(400, "Title and discription are required")
     }
 
@@ -34,10 +34,10 @@ const publishAVideo = asyncHandler(async (req,res) => {
         throw new ApiError(400, "Title and discription must be unique")
     }
     
-    const user_Id = req.user_Id
+    const user_Id = req.user?._Id
 
     let videoLocalPath;
-    if (req.files && Array.isArray(req.files.video && req.files.video.length > 0)) {
+    if (req.files && Array.isArray(req.files.video) && req.files.video.length > 0) {
         videoLocalPath = req.files.video[0].path
     }
 
@@ -46,8 +46,8 @@ const publishAVideo = asyncHandler(async (req,res) => {
     }
 
     let thumbnailLocalPath;
-    if (req.files && Array.isArray(req.files.thumbnail && req.files.thumbnail.length > 0)) {
-        thumbnailLocalPath = req.files.video[0].path
+    if (req.files && Array.isArray(req.files.thumbnail) && req.files.thumbnail.length > 0) {
+        thumbnailLocalPath = req.files.thumbnail[0].path
     }
 
     if (!thumbnailLocalPath) {
@@ -76,7 +76,7 @@ const publishAVideo = asyncHandler(async (req,res) => {
     })
 
     const createdVideo = await Video.findByIdAndUpdate(video._id, {
-        $push:{owner: user_Id}
+        $set:{owner: user_Id}
     },
     {
         new: true
@@ -175,7 +175,7 @@ const deleteVideo = asyncHandler(async (req, res) => {
     
     const {videoId} = req.params
     
-    const video = Video.findById(videoId)
+    const video = await Video.findById(videoId)
 
     const thumbnailPublicId = video.thumbnailPublicId
     const videoFilePublicId = video.videoFilePublicId
