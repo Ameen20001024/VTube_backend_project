@@ -43,7 +43,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 
     if(
-        { fullname, username, email, password }.some((field) => field?.trim() === "")
+        [ fullname, username, email, password ].some((field) => field?.trim() === "")
     ){
         throw new ApiError(400, "All fields are compulsory")
     }
@@ -183,7 +183,7 @@ const logoutuser = asyncHandler(async (req, res) => {
 
     return res
     .status(200)
-    .clearcookie("refreshtoken". options)
+    .clearcookie("refreshtoken", options)
     .clearcookie("accesstoken", options)
     .json(
         new ApiResponse(200, {}, "Logged out successfully")
@@ -250,7 +250,7 @@ const RefreshAccessToken = asyncHandler(async (req, res) => {
             throw new ApiError(400, "invalid refresh token")
         }
     
-        const {accesstoken, newRefreshToken} = await generateaccessandrefreshtokens(user._id)
+        const {accesstoken, refreshtoken} = await generateaccessandrefreshtokens(user._id)
     
         const options = {
             httpOnly: true,
@@ -259,10 +259,10 @@ const RefreshAccessToken = asyncHandler(async (req, res) => {
     
         return res
         .status(200)
-        .cookie("refreshtoken", newRefreshToken, options)
+        .cookie("refreshtoken", refreshtoken, options)
         .cookie("accesstoken", accesstoken, options)
         .json(
-            new ApiResponse(200, {accesstoken, refreshtoken: newRefreshToken}, "Access token refreshed")
+            new ApiResponse(200, {accesstoken, refreshtoken}, "Access token refreshed")
         )       
     } catch (error) {
         throw new ApiError(400, error?.message || "invalid refreshtoken")
@@ -283,7 +283,7 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Invalid password")
     }
 
-    if (newPassword === confirmPassword) {
+    if (newPassword !== confirmPassword) {
         throw new ApiError(400, "Passwords don't match")
     }
 
@@ -293,14 +293,18 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 
     return res
     .status(200)
-    .json(200, {}, "password changed successfully")
+    .json(
+        new ApiResponse(200, {}, "password changed successfully")
+    )
 })
 
 
 const getCurrentUser = asyncHandler(async (req, res) => {
     return res
     .status(200)
-    .json(200, req.user, "User fetched")
+    .json(
+        new ApiResponse(200, req.user, "User fetched")
+    )
 })
 
 
@@ -325,7 +329,9 @@ const updateAccountDetail = asyncHandler(async (req, res) => {
 
     return res
     .status(200)
-    .json(200, user, "Account details updated")
+    .json(
+        new ApiResponse(200, user, "Account details updated")
+    )
 
 })
 
@@ -338,7 +344,7 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Avatar not found")
     }
 
-    const avatarlocalpath = req.files?.path
+    const avatarlocalpath = req.file?.path
     
     if (!avatarlocalpath) {
         throw new ApiError(400, "File not found")
@@ -368,10 +374,17 @@ const updateUserAvatar = asyncHandler(async (req, res) => {
         await deletefromcloudinary(oldavatarpublic_id)
     }
 
+    const options = {
+        httpOnly: true,
+        secure: true
+    }
+
     return res
     .status(200)
     .cookie("Avatar_public_id", avatar.public_id, options)
-    .json(200, user, "Avatar details updated")
+    .json(
+        new ApiResponse(200, user, "Avatar details updated")
+    )
 
 })
 
@@ -409,10 +422,15 @@ const updateUsercoverImage = asyncHandler(async (req, res) => {
         await deletefromcloudinary(oldcoverimagepublic_id)
     }
 
+    const options = {
+        httpOnly: true,
+        secure: true
+    }
+
     return res
     .status(200)
     .cookie("CoverImage_public_id", coverImage?.public_id || "", options)
-    .json(200, user, "Cover Image details updated")
+    .json(new ApiResponse(200, user, "Cover Image details updated"))
 
 })
 
