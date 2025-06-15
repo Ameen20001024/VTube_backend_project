@@ -347,6 +347,7 @@ const updateVideoThumbnailFile = asyncHandler(async (req, res) => {
 
 export {
     playVideoById,
+    getAllVideos,
     deleteVideo,
     updateVideoFile,
     updateVideoThumbnailFile,
