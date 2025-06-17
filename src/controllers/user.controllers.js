@@ -1,11 +1,11 @@
-import { User } from "../models/user.models";
-import { ApiError } from "../utils/apierror";
-import { ApiResponse } from "../utils/apiResponse";
+import { User } from "../models/user.models.js";
+import { ApiError } from "../utils/apierror.js";
+import { ApiResponse } from "../utils/apiResponse.js";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
-import { asyncHandler } from "../utils/asyncHandler";
-import { uploadoncloudinary , deletefromcloudinary } from "../utils/cloudinary";
-import { Subscription } from "../models/subscriptions.models";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { uploadoncloudinary , deletefromcloudinary } from "../utils/cloudinary.js";
+import { Subscription } from "../models/subscriptions.models.js";
 
 
 const generateaccessandrefreshtokens = async (userId) => {

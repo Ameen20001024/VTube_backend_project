@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
-import { asyncHandler } from "../utils/asyncHandler";
-import { uploadoncloudinary } from "../utils/cloudinary";
-import { ApiError } from "../utils/apierror";
-import { ApiResponse } from "../utils/apiResponse";
-import { Comments } from "../models/comments.models";
-import { Likes } from "../models/likes.models";
-import { Video } from "../models/video.models";
-import { User } from "../models/user.models";
-import { Playlist } from "../models/playlists.models";
+import { asyncHandler } from "../utils/asyncHandler.js";
+// import { uploadoncloudinary } from "../utils/cloudinary";
+import { ApiError } from "../utils/apierror.js";
+import { ApiResponse } from "../utils/apiResponse.js";
+// import { Comments } from "../models/comments.models";
+import { Likes } from "../models/likes.models.js";
+// import { Video } from "../models/video.models";
+// import { User } from "../models/user.models";
+// import { Playlist } from "../models/playlists.models";
 
 
 const likeAVideo = asyncHandler(async (req, res) => {

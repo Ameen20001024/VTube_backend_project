@@ -16,3 +16,5 @@ router.use(verifyJWT)
 router.route("/:video_id").post(addComment).get(getAllVideoComments)
 
 router.route("/:comment_id").patch(updateComment).delete(deletecomment)
+
+export default router

@@ -1,12 +1,12 @@
-import { ApiError } from "../utils/apierror";
-import { ApiResponse } from "../utils/apiResponse";
-import { deletefromcloudinary, uploadoncloudinary } from "../utils/cloudinary";
-import { asyncHandler } from "../utils/asyncHandler";
+import { ApiError } from "../utils/apierror.js";
+import { ApiResponse } from "../utils/apiResponse.js";
+import { deletefromcloudinary, uploadoncloudinary } from "../utils/cloudinary.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 import mongoose from "mongoose";
-import { Video } from "../models/video.models";
-import { User } from "../models/user.models";
-import { Playlist } from "../models/playlists.models";
-import { Likes } from "../models/likes.models";
+import { Video } from "../models/video.models.js";
+import { User } from "../models/user.models.js";
+import { Playlist } from "../models/playlists.models.js";
+import { Likes } from "../models/likes.models.js";
 
 
 const publishAVideo = asyncHandler(async (req,res) => {

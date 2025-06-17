@@ -1,11 +1,11 @@
 import mongoose, { set } from "mongoose";
-import { asyncHandler } from "../utils/asyncHandler";
+import { asyncHandler } from "../utils/asyncHandler.js";
 // import { uploadoncloudinary } from "../utils/cloudinary";
-import { ApiError } from "../utils/apierror";
-import { ApiResponse } from "../utils/apiResponse";
-import { Comments } from "../models/comments.models";
+import { ApiError } from "../utils/apierror.js";
+import { ApiResponse } from "../utils/apiResponse.js";
+import { Comments } from "../models/comments.models.js";
 // import { User } from "../models/user.models";
-import { Video } from "../models/video.models";
+import { Video } from "../models/video.models.js";
 
 
 const addComment = asyncHandler(async (req, res) => {

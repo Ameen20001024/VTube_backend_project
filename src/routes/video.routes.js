@@ -12,7 +12,7 @@ import {
     updateVideoThumbnailFile,
     updateVideodata,
     publishAVideo 
-} from "../controllers/video.controllers"; 
+} from "../controllers/video.controllers.js"; 
 
 
 const router = Router()

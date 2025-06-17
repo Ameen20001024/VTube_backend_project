@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken"
 const userSchema = new Schema(
     {
         username:{
-            type: string,
+            type: String,
             required: true,
             lowercase: true,
             unique: true,
@@ -14,7 +14,7 @@ const userSchema = new Schema(
         },
 
         email:{
-            type: string,
+            type: String,
             required: true,
             lowercase: true,
             unique: true,
@@ -22,7 +22,7 @@ const userSchema = new Schema(
         },
 
         fullname:{
-            type: string,
+            type: String,
             required: true,
             trim: true,
             index: true
@@ -30,16 +30,16 @@ const userSchema = new Schema(
 
         avatar:{
             required: true,
-            type: string
+            type: String
         },
 
         coverimage:{
-            type: string
+            type: String
         },
 
         password:{
             required: [true, "Password is required"],
-            type: string
+            type: String
         },
 
         watchHistory:[{
@@ -48,7 +48,7 @@ const userSchema = new Schema(
         }],
 
         refreshtoken:{
-            type:string
+            type:String
         }
     },
 

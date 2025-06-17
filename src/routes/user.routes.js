@@ -13,7 +13,7 @@ import {
     subscribers_list,
     getWatchHistory,
     // deleteUserAccount
-} from "../controllers/user.controllers";
+} from "../controllers/user.controllers.js";
 
 import {upload} from "../middlewares/multer.middleware.js"
 import {verifyJWT} from "../middlewares/auth.middleware.js"
